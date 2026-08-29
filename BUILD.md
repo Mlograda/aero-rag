@@ -81,14 +81,27 @@ Gate: `pytest tests/test_m2_index.py`
 
 ---
 
-## M3 — Retrieval, hybrid (2 hours)
+## M3 — Retrieval, hybrid (2.5 hours)
 
 Contract — `src/retrieve.py`:
+
 ```
 dense_search(query: str, k: int) -> list[dict]
 bm25_search(query: str, k: int) -> list[dict]
-hybrid_search(query: str, k: int) -> list[dict]   # reciprocal rank fusion
+hybrid_search(query: str, k: int, fetch_k: int = 50,
+              filters: dict | None = None,
+              filter_mode: str = "soft") -> list[dict]
 ```
+
+`fetch_k` is the candidate pool size, `k` is what you return. They must be
+separate parameters. If you boost over a pool of 10 you can only reorder
+those 10 — a relevant document at rank 40 is unreachable and you have
+recreated the silent-drop failure at a later stage. Over-retrieve, then boost,
+then truncate.
+
+`filter_mode`: "hard" removes non-matching candidates before search;
+"soft" retrieves over everything and adds a score bonus on match. Build both
+in M3 — M6 compares them and retrofitting this later means rewriting M3.
 
 RRF is about six lines. Do not import a framework for it — writing it yourself
 is the point, and it's an interview question.
@@ -142,19 +155,51 @@ and faithfulness % are pasted into README.md.
 Whatever the numbers are, publish them. A README saying "recall@5 = 0.62, here
 is where it fails and why" beats a README with no numbers, every time.
 
+
 ---
 
-## M6 — Ablation (2 hours)
+## M6 — Ablation (4 hours)
 
-Change exactly one variable. Rerun the eval. Put a before/after table in the
-README.
+Two experiments. Rerun the eval for each and put before/after tables in the README.
 
-Options: chunk size 400→1000, add a cross-encoder reranker, dense-only vs
-hybrid, different embedding model.
+**A. Retrieval strategy** — dense-only vs hybrid (dense + BM25).
+Expect BM25 to carry queries with part numbers, aircraft types and
+ATA-style identifiers; expect dense to carry paraphrased questions.
+Report recall@5 and MRR for both.
 
-One table with two rows of real numbers is worth more than three extra
-features. This is the milestone that makes you sound like an engineer instead
-of a course graduate.
+**B. Metadata degradation** — the one that matters.
+
+Hypothesis: hard metadata filters fail silently. When a field is missing or
+wrong, the document is dropped from the candidate set before semantic search
+runs, so a relevant document disappears with no error and no warning. The
+system returns five confident results and never signals that the one holding
+the answer was excluded.
+
+Method:
+1. Measure and publish per-field coverage across all 50 records.
+2. Build three corpus variants: clean (baseline), 30% of metadata values
+   nulled at random, 30% corrupted (values swapped to a wrong-but-valid
+   value taken from another record).
+3. Run the eval on all three under hard filtering (`aircraft = X` removes
+   non-matching candidates before search).
+4. Run the eval on all three under soft filtering (retrieve fetch_k=50
+   semantically, boost scores on metadata match, re-sort, truncate to k=5).
+
+Six numbers in one table: {clean, nulled, corrupted} x {hard, soft}.
+
+Expected [to be tested, not assumed]: hard filtering collapses under both
+degradations; soft filtering degrades gracefully under nulls. Corrupted +
+soft is the open question — a wrong-but-valid value both fails to earn its
+boost and lets competing documents outrank it. If soft also breaks there,
+report it. An honest negative result is worth more than a tidy one.
+
+The claim to defend in the README: metadata you don't control should
+influence ranking, not gate retrieval.
+
+Why this is in the plan: production ticket and knowledge-base metadata is
+filled by humans under time pressure. Fields are missing, and worse, some are
+confidently wrong. Empty fails visibly; wrong does not. A hard filter turns
+both into a silent recall failure.
 
 ---
 
