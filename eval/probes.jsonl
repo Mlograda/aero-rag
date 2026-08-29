@@ -1,0 +1,6 @@
+{"note": "M3 gate. Replace each placeholder with a real question you wrote after reading a real report, and the report_id that answers it. 5 rows. Do this by hand."}
+{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
+{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
+{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
+{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
+{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}

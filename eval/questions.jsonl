@@ -1,0 +1,1 @@
+{"note": "M5. 50 rows, hand-written, hand-labelled. 35 single-report, 10 multi-report, 5 unanswerable (gold_report_ids: [], expect refusal). Do not generate these with an LLM."}
