@@ -9,7 +9,7 @@ with hybrid retrieval, grounded citations, and a hand-labelled evaluation set.
 Status: in progress. See BUILD.md for the milestone plan.
 
 ## Design decisions
-- Chunk size: TBD — record the value and the reasoning at M2.
+- Chunk size: M2 reasoning: cap at 3,000 characters, chosen because the median is 1,655 and the distribution has no natural break. There are 32 out of 150 (21%) reports with more than 3000 characters (decision: these will be chunked with overlap) and 79% of reports stay intact (embedded as a whole) and five retrieved chunks fit comfortably in context (3000x5 = 15000 characters). cap size; 3000, Overlap size: 200 characters
 
 ## Evaluation
 - recall@5: TBD

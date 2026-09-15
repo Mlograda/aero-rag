@@ -57,7 +57,11 @@ def pdf_to_reports(pdf_path: Path) -> list[dict]:
         if end == -1:
             end = len(narrative_fields)
         narrative = narrative_fields[:end].strip()
-
+        # The source repeats every field once per reporter, so multi-reporter
+        # records carry duplicate values. dict.fromkeys deduplicates while
+        # preserving first-seen order (a set() would scramble it).        
+        inc_fields = {k: list(dict.fromkeys(v)) for k, v in inc_fields.items()}
+        
         records.append({
             "report_id": report_id,
             "narrative": narrative,
