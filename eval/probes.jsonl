@@ -1,6 +1,11 @@
-{"note": "M3 gate. Replace each placeholder with a real question you wrote after reading a real report, and the report_id that answers it. 5 rows. Do this by hand."}
-{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
-{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
-{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
-{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
-{"question": "REPLACE ME", "gold_report_ids": ["REPLACE ME"]}
+{"question": "What can go wrong when using a rotary tool to remove corrosion from fasteners?", "gold_report_ids": ["2026576"]}
+// {"question": "How often should B787 oxygen bottles be inspected?", "gold_report_ids": ["2050585"]}
+// {"question": "Why does a longer inspection interval increase risk on some fleets?", "gold_report_ids": ["2050585"]}
+{"question": "What hazard comes from degraded batteries inside a pressurised oxygen cylinder?", "gold_report_ids": ["2050585"]}
+// {"question": "What happens when a smaller aircraft flies into the wake of a heavy jet during descent?", "gold_report_ids": ["1973695"]}
+{"question": "How can losing separation behind a heavy aircraft lead to a wake encounter?", "gold_report_ids": ["1973695"]}
+// {"question": "Why does a sudden speed reduction by the aircraft ahead create a hazard?", "gold_report_ids": ["1973695"]}
+// {"question": "Where in an Airbus can a hazmat shipment go?", "gold_report_ids": ["2060780"]}
+{"question": "What is a NOTOC and does completing one update the final load sheet?", "gold_report_ids": ["2060780"]}
+// {"question": "Why can accepting a late hazmat shipment cause a departure delay?", "gold_report_ids": ["2060780"]}
+{"question": "Why would an aircraft need constant forward pressure on the controls to maintain level flight?", "gold_report_ids": ["2032428"]}
